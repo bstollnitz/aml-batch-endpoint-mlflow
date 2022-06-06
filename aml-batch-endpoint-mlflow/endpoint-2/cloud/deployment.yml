@@ -1,0 +1,10 @@
+$schema: https://azuremlschemas.azureedge.net/latest/batchDeployment.schema.json
+name: blue
+endpoint_name: endpoint-batch-mlflow-2
+model: azureml:model-batch-mlflow-2@latest
+compute: azureml:cluster-gpu
+mini_batch_size: 10
+output_file_name: predictions_pytorch.csv
+retry_settings:
+  max_retries: 1
+  timeout: 10

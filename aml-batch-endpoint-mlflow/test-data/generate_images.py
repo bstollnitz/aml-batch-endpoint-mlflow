@@ -9,9 +9,9 @@ import pandas
 from PIL import Image
 from torchvision import datasets
 
-DATA_DIR = "aml-command-artifact/test-data/data"
-IMAGES_DIR = "aml-command-artifact/test-data/images"
-TEST_DATA_DIR = "aml-command-artifact/test-data"
+DATA_DIR = "aml-batch-endpoint-mlflow/test-data/data"
+IMAGES_DIR = "aml-batch-endpoint-mlflow/test-data/images"
+TEST_DATA_DIR = "aml-batch-endpoint-mlflow/test-data"
 
 
 def generate_images(num_images: int) -> None:
@@ -109,7 +109,7 @@ def generate_json_for_azureml_from_images() -> None:
 def main():
     logging.basicConfig(level=logging.INFO)
 
-    generate_images(2)
+    generate_images(20)
     generate_csv_from_images()
     generate_json_from_images()
     generate_json_for_azureml_from_images()
