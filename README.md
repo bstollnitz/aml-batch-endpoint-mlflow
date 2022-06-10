@@ -38,7 +38,11 @@ conda activate aml-batch-endpoint-mlflow
 
 # Train and predict locally
 
-* Open the 'endpoint-1/src/train.py` file and press F5. An 'endpoint-1/model' is created with the trained model.
+```
+cd aml-batch-endpoint-mlflow/endpoint-1
+```
+
+* Open the 'src/train.py` file and press F5. An 'model' is created with the trained model.
 * You can analyze the metrics logged in the "mlruns" directory with the following command:
 
 ```
