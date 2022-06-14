@@ -91,7 +91,7 @@ az ml batch-deployment create -f cloud/deployment.yml --set-default
 Invoke the endpoint.
 
 ```
-az ml batch-endpoint invoke --name endpoint-batch-mlflow-1 --input ../test-data/images.csv
+az ml batch-endpoint invoke --name endpoint-batch-mlflow-1 --input ../test-data/images.csv --input-type uri_file
 ```
 
 
@@ -117,5 +117,5 @@ az ml batch-deployment create -f cloud/deployment.yml --set-default
 Invoke the endpoint.
 
 ```
-az ml batch-endpoint invoke --name endpoint-batch-mlflow-2 --input ../test-data/images.csv
+az ml batch-endpoint invoke --name endpoint-batch-mlflow-2 --input ../test-data/images.csv --input-type uri_file
 ```
