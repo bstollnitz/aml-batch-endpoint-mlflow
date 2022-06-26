@@ -1,0 +1,15 @@
+flavors:
+  python_function:
+    artifacts:
+      pytorch_model:
+        path: artifacts/pytorch_model
+        uri: aml_batch_endpoint_mlflow/endpoint_2/pytorch_model
+    cloudpickle_version: 2.0.0
+    code: code
+    env: conda.yaml
+    loader_module: mlflow.pyfunc.model
+    python_model: python_model.pkl
+    python_version: 3.9.10
+mlflow_version: 1.26.0
+model_uuid: 06a4acba7ddc4ead881ddd93879f90b1
+utc_time_created: '2022-06-20 18:36:11.108532'
