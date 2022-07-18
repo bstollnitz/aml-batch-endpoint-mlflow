@@ -13,14 +13,11 @@ from torch.utils.data import DataLoader, random_split
 from torchvision import datasets
 from torchvision.transforms import ToTensor
 
-from common import ARTIFACT_NAME
-from model_wrapper import ModelWrapper
 from neural_network import NeuralNetwork
 from utils_train_nn import evaluate, fit
 
-DATA_DIR = "aml_batch_endpoint_mlflow/data"
-PYTORCH_MODEL_DIR = "aml_batch_endpoint_mlflow/endpoint_2/pytorch_model"
-PYFUNC_MODEL_DIR = "aml_batch_endpoint_mlflow/endpoint_2/pyfunc_model"
+DATA_DIR = "aml_batch_endpoint/data"
+MODEL_DIR = "aml_batch_endpoint/endpoint_1/model"
 
 
 def load_train_val_data(
@@ -46,45 +43,22 @@ def load_train_val_data(
     return (train_loader, val_loader)
 
 
-def save_model(pytorch_model_dir: str, pyfunc_model_dir: str,
-               model: nn.Module) -> None:
+def save_model(model_dir, model: nn.Module) -> None:
     """
     Saves the trained model.
     """
-    # Save PyTorch model.
-    pytorch_code_filenames = ["neural_network.py", "utils_train_nn.py"]
-    pytorch_full_code_paths = [
-        Path(Path(__file__).parent, code_path)
-        for code_path in pytorch_code_filenames
+    code_paths = ["neural_network.py", "utils_train_nn.py"]
+    full_code_paths = [
+        Path(Path(__file__).parent, code_path) for code_path in code_paths
     ]
-    logging.info("Saving PyTorch model to %s", pytorch_model_dir)
-    shutil.rmtree(pytorch_model_dir, ignore_errors=True)
+    shutil.rmtree(model_dir, ignore_errors=True)
+    logging.info("Saving model to %s", model_dir)
     mlflow.pytorch.save_model(pytorch_model=model,
-                              path=pytorch_model_dir,
-                              code_paths=pytorch_full_code_paths)
-
-    # Save PyFunc model that wraps the PyTorch model.
-    pyfunc_code_filenames = ["model_wrapper.py", "common.py"]
-    pyfunc_full_code_paths = [
-        Path(Path(__file__).parent, code_path)
-        for code_path in pyfunc_code_filenames
-    ]
-    model = ModelWrapper()
-    artifacts = {
-        ARTIFACT_NAME: pytorch_model_dir,
-    }
-    conda_env = Path(pytorch_model_dir, "conda.yaml").as_posix()
-    logging.info("Saving PyFunc model to %s", pyfunc_model_dir)
-    shutil.rmtree(pyfunc_model_dir, ignore_errors=True)
-    mlflow.pyfunc.save_model(path=pyfunc_model_dir,
-                             python_model=model,
-                             artifacts=artifacts,
-                             code_path=pyfunc_full_code_paths,
-                             conda_env=conda_env)
+                              path=model_dir,
+                              code_paths=full_code_paths)
 
 
-def train(data_dir: str, pytorch_model_dir: str, pyfunc_model_dir: str,
-          device: str) -> None:
+def train(data_dir: str, model_dir: str, device: str) -> None:
     """
     Trains the model for a number of epochs, and saves it.
     """
@@ -113,7 +87,7 @@ def train(data_dir: str, pytorch_model_dir: str, pyfunc_model_dir: str,
         }
         mlflow.log_metrics(metrics, step=epoch)
 
-    save_model(pytorch_model_dir, pyfunc_model_dir, model)
+    save_model(model_dir, model)
 
 
 def main():
@@ -121,12 +95,7 @@ def main():
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--data_dir", dest="data_dir", default=DATA_DIR)
-    parser.add_argument("--pytorch_model_dir",
-                        dest="pytorch_model_dir",
-                        default=PYTORCH_MODEL_DIR)
-    parser.add_argument("--pyfunc_model_dir",
-                        dest="pyfunc_model_dir",
-                        default=PYFUNC_MODEL_DIR)
+    parser.add_argument("--model_dir", dest="model_dir", default=MODEL_DIR)
     args = parser.parse_args()
     logging.info("input parameters: %s", vars(args))
 
