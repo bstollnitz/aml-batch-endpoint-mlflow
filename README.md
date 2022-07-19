@@ -130,6 +130,15 @@ Invoke the endpoint.
 az ml batch-endpoint invoke --name endpoint-batch-2 --input ../test_data/images.csv --input-type uri_file
 ```
 
+
+Invoke the endpoint using a curl command.
+
+```
+az ml data create -f cloud/data-invoke-batch.yml
+chmod +x invoke.sh
+./invoke.sh
+```
+
 Here's how you delete the endpoint when you're done:
 
 ```

@@ -1,0 +1,4 @@
+$schema: https://azuremlschemas.azureedge.net/latest/data.schema.json
+name: data-invoke-batch-2
+path: "../../test_data/images.csv"
+type: uri_file
