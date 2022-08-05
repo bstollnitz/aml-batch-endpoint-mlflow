@@ -38,7 +38,7 @@ conda activate aml_batch_endpoint
 ```
 
 
-# Train and predict locally
+# Training and inference on your development machine
 
 * Open the 'endpoint_1/src/train.py` file and press F5. A 'model' folder is created with the trained model.
 * You can analyze the metrics logged in the "mlruns" directory with the following command:
@@ -55,7 +55,7 @@ mlflow models predict --model-uri model --input-path "../test_data/images.csv" -
 mlflow models predict --model-uri model --input-path "../test_data/images.json" --content-type json
 ```
 
-* Repeat for endpoint 2:
+* Repeat for endpoint 2. Run 'endpoint_2/src/train.py' and make a local prediction with the following commands:
 
 ```
 cd ../endpoint_2
@@ -64,7 +64,7 @@ mlflow models predict --model-uri pyfunc_model --input-path "../test_data/images
 ```
 
 
-# Deploy in the cloud
+# Deploying in the cloud using Azure ML
 
 Create the compute cluster.
 
