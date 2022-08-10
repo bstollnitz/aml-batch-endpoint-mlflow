@@ -54,14 +54,19 @@ mlflow ui
 
 ## Endpoint 2
 
-* Open the `endpoint_2/src/train.py` file and press F5. Two new folders are created, `pyfunc_model` and `pytorch_model`. The `pyfunc_model` is the outer one that we'll later use in the endpoint.
+* Open the `endpoint_2/src/train.py` file and press F5. Two new folders are created, `pyfunc_model` and `pytorch_model`. The `pyfunc_model` is the outer one that we'll use to make predictions.
 * You can analyze the metrics logged in the `mlruns` directory with the following command:
 
 ```
 mlflow ui
 ```
 
-* Make a local prediction by running `endpoint_2/src/score_local.py`.
+* Make a local prediction with the following command:
+
+```
+cd ../endpoint_2
+mlflow models predict --model-uri pyfunc_model --input-path "../test_data/images.csv" --content-type csv
+```
 
 
 # Deploying in the cloud using Azure ML

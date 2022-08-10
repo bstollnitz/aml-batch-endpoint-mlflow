@@ -11,7 +11,7 @@ import torch
 from torch import nn
 from torch.utils.data import DataLoader, random_split
 from torchvision import datasets
-from torchvision.transforms import ToTensor
+from torchvision.transforms import PILToTensor
 
 from common import ARTIFACT_NAME
 from model_wrapper import ModelWrapper
@@ -34,7 +34,7 @@ def load_train_val_data(
     full_train_data = datasets.FashionMNIST(data_dir,
                                             train=True,
                                             download=True,
-                                            transform=ToTensor())
+                                            transform=PILToTensor())
     full_train_len = len(full_train_data)
     train_len = int(full_train_len * training_fraction)
     val_len = full_train_len - train_len
