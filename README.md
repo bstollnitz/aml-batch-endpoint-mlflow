@@ -40,28 +40,28 @@ conda activate aml_batch_endpoint
 
 # Training and inference on your development machine
 
-* Open the 'endpoint_1/src/train.py` file and press F5. A 'model' folder is created with the trained model.
-* You can analyze the metrics logged in the "mlruns" directory with the following command:
+## Endpoint 1
+
+* Open the `endpoint_1/src/train.py` file and press F5. A `model` folder is created with the trained model.
+* You can analyze the metrics logged in the `mlruns` directory with the following command:
 
 ```
 mlflow ui
 ```
 
-* Make a local prediction using the trained mlflow model. You can use either csv or json files:
+* Make a local prediction by running `endpoint_1/src/score_local.py`.
+
+
+## Endpoint 2
+
+* Open the `endpoint_2/src/train.py` file and press F5. Two new folders are created, `pyfunc_model` and `pytorch_model`. The `pyfunc_model` is the outer one that we'll later use in the endpoint.
+* You can analyze the metrics logged in the `mlruns` directory with the following command:
 
 ```
-cd aml_batch_endpoint/endpoint_1
-mlflow models predict --model-uri model --input-path "../test_data/images.csv" --content-type csv
-mlflow models predict --model-uri model --input-path "../test_data/images.json" --content-type json
+mlflow ui
 ```
 
-* Repeat for endpoint 2. Run 'endpoint_2/src/train.py' and make a local prediction with the following commands:
-
-```
-cd ../endpoint_2
-mlflow models predict --model-uri pyfunc_model --input-path "../test_data/images.csv" --content-type csv
-mlflow models predict --model-uri pyfunc_model --input-path "../test_data/images.json" --content-type json
-```
+* Make a local prediction by running `endpoint_2/src/score_local.py`.
 
 
 # Deploying in the cloud using Azure ML
@@ -95,7 +95,7 @@ az ml batch-deployment create -f cloud/deployment.yml --set-default
 Invoke the endpoint.
 
 ```
-az ml batch-endpoint invoke --name endpoint-batch-1 --input ../test_data/images.csv --input-type uri_file
+az ml batch-endpoint invoke --name endpoint-batch-1 --input ../test_data/images
 ```
 
 Here's how you delete the endpoint when you're done:

@@ -15,5 +15,6 @@ class NeuralNetwork(nn.Module):
                                       nn.ReLU(), nn.Linear(20, 10))
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
+        x = x / 255.0
         y_prime = self.sequence(x)
         return y_prime

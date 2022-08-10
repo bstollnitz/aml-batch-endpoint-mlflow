@@ -5,13 +5,16 @@ import logging
 import shutil
 from pathlib import Path
 from typing import Tuple
+import numpy as np
 
 import mlflow
+from mlflow.models.signature import ModelSignature
+from mlflow.types.schema import Schema, TensorSpec
 import torch
 from torch import nn
 from torch.utils.data import DataLoader, random_split
 from torchvision import datasets
-from torchvision.transforms import ToTensor
+from torchvision.transforms import PILToTensor
 
 from neural_network import NeuralNetwork
 from utils_train_nn import evaluate, fit
@@ -31,7 +34,7 @@ def load_train_val_data(
     full_train_data = datasets.FashionMNIST(data_dir,
                                             train=True,
                                             download=True,
-                                            transform=ToTensor())
+                                            transform=PILToTensor())
     full_train_len = len(full_train_data)
     train_len = int(full_train_len * training_fraction)
     val_len = full_train_len - train_len
@@ -47,6 +50,12 @@ def save_model(model_dir, model: nn.Module) -> None:
     """
     Saves the trained model.
     """
+    input_schema = Schema([
+        TensorSpec(np.dtype(np.float32), (-1, 784)),
+    ])
+    output_schema = Schema([TensorSpec(np.dtype(np.float32), (-1, 10))])
+    signature = ModelSignature(inputs=input_schema, outputs=output_schema)
+
     code_paths = ["neural_network.py", "utils_train_nn.py"]
     full_code_paths = [
         Path(Path(__file__).parent, code_path) for code_path in code_paths
@@ -55,7 +64,8 @@ def save_model(model_dir, model: nn.Module) -> None:
     logging.info("Saving model to %s", model_dir)
     mlflow.pytorch.save_model(pytorch_model=model,
                               path=model_dir,
-                              code_paths=full_code_paths)
+                              code_paths=full_code_paths,
+                              signature=signature)
 
 
 def train(data_dir: str, model_dir: str, device: str) -> None:
