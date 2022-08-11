@@ -7,7 +7,10 @@ from pathlib import Path
 from typing import Tuple
 
 import mlflow
+import numpy as np
 import torch
+from mlflow.models.signature import ModelSignature
+from mlflow.types.schema import ColSpec, Schema, TensorSpec
 from torch import nn
 from torch.utils.data import DataLoader, random_split
 from torchvision import datasets
@@ -52,6 +55,11 @@ def save_model(pytorch_model_dir: str, pyfunc_model_dir: str,
     Saves the trained model.
     """
     # Save PyTorch model.
+    input_schema = Schema(
+        [ColSpec(type="float", name="col_{i}") for i in range(784)])
+    output_schema = Schema([TensorSpec(np.dtype(np.float32), (-1, 10))])
+    signature = ModelSignature(inputs=input_schema, outputs=output_schema)
+
     pytorch_code_filenames = ["neural_network.py", "utils_train_nn.py"]
     pytorch_full_code_paths = [
         Path(Path(__file__).parent, code_path)
@@ -61,7 +69,8 @@ def save_model(pytorch_model_dir: str, pyfunc_model_dir: str,
     shutil.rmtree(pytorch_model_dir, ignore_errors=True)
     mlflow.pytorch.save_model(pytorch_model=model,
                               path=pytorch_model_dir,
-                              code_paths=pytorch_full_code_paths)
+                              code_paths=pytorch_full_code_paths,
+                              signature=signature)
 
     # Save PyFunc model that wraps the PyTorch model.
     pyfunc_code_filenames = ["model_wrapper.py", "common.py"]
