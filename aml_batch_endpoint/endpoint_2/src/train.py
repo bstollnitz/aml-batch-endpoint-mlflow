@@ -55,10 +55,12 @@ def save_model(pytorch_model_dir: str, pyfunc_model_dir: str,
     Saves the trained model.
     """
     # Save PyTorch model.
-    input_schema = Schema(
-        [ColSpec(type="float", name="col_{i}") for i in range(784)])
-    output_schema = Schema([TensorSpec(np.dtype(np.float32), (-1, 10))])
-    signature = ModelSignature(inputs=input_schema, outputs=output_schema)
+    pytorch_input_schema = Schema([
+        TensorSpec(np.dtype(np.float32), (-1, 784)),
+    ])
+    pytorch_output_schema = Schema([TensorSpec(np.dtype(np.float32), (-1, 10))])
+    pytorch_signature = ModelSignature(inputs=pytorch_input_schema,
+                                       outputs=pytorch_output_schema)
 
     pytorch_code_filenames = ["neural_network.py", "utils_train_nn.py"]
     pytorch_full_code_paths = [
@@ -70,9 +72,15 @@ def save_model(pytorch_model_dir: str, pyfunc_model_dir: str,
     mlflow.pytorch.save_model(pytorch_model=model,
                               path=pytorch_model_dir,
                               code_paths=pytorch_full_code_paths,
-                              signature=signature)
+                              signature=pytorch_signature)
 
     # Save PyFunc model that wraps the PyTorch model.
+    pyfunc_input_schema = Schema(
+        [ColSpec(type="double", name=f"col_{i}") for i in range(784)])
+    pyfunc_output_schema = Schema([TensorSpec(np.dtype(np.int32), (-1, 1))])
+    pyfunc_signature = ModelSignature(inputs=pyfunc_input_schema,
+                                      outputs=pyfunc_output_schema)
+
     pyfunc_code_filenames = ["model_wrapper.py", "common.py"]
     pyfunc_full_code_paths = [
         Path(Path(__file__).parent, code_path)
@@ -89,7 +97,8 @@ def save_model(pytorch_model_dir: str, pyfunc_model_dir: str,
                              python_model=model,
                              artifacts=artifacts,
                              code_path=pyfunc_full_code_paths,
-                             conda_env=conda_env)
+                             conda_env=conda_env,
+                             signature=pyfunc_signature)
 
 
 def train(data_dir: str, pytorch_model_dir: str, pyfunc_model_dir: str,
