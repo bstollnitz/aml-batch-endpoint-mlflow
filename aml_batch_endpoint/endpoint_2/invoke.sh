@@ -1,6 +1,6 @@
 ENDPOINT_NAME=endpoint-batch-2
 DATASET_NAME=data-invoke-batch-2
-DATASET_VERSION=1
+DATASET_VERSION=3
 
 SUBSCRIPTION_ID=$(az account show --query id | tr -d '\r"')
 echo "SUBSCRIPTION_ID: $SUBSCRIPTION_ID"
@@ -23,16 +23,16 @@ curl --location --request POST $SCORING_URI \
 --data-raw "{
     \"properties\": {
         \"inputData\": {
-            \"uriFolder\": {
+            \"uriFile\": {
                 \"uri\": \"/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/data/$DATASET_NAME/versions/$DATASET_VERSION\",
-                \"jobInputType\": \"UriFolder\",
+                \"jobInputType\": \"UriFile\"
             }
         },
         \"outputData\": {
             \"uriFile\": {
                 \"uri\": \"azureml://datastores/workspaceblobstore/paths/$ENDPOINT_NAME/batch-endpoint-output.csv\",
-                \"jobOutputType\": \"UriFile\",
+                \"jobOutputType\": \"UriFile\"
             }
-        },
+        }
     }
 }"
