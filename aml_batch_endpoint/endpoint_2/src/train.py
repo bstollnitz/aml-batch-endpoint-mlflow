@@ -77,7 +77,7 @@ def save_model(pytorch_model_dir: str, pyfunc_model_dir: str,
     # Save PyFunc model that wraps the PyTorch model.
     pyfunc_input_schema = Schema(
         [ColSpec(type="double", name=f"col_{i}") for i in range(784)])
-    pyfunc_output_schema = Schema([TensorSpec(np.dtype(np.int32), (-1, 1))])
+    pyfunc_output_schema = Schema([TensorSpec(np.dtype(str), (-1, 1))])
     pyfunc_signature = ModelSignature(inputs=pyfunc_input_schema,
                                       outputs=pyfunc_output_schema)
 
