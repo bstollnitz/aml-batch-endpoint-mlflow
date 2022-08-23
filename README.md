@@ -160,4 +160,4 @@ az ml batch-endpoint delete --name endpoint-batch-2 -y
 ## Related resourcse
 
 * [Azure ML endpoints](https://docs.microsoft.com/en-us/azure/machine-learning/concept-endpoints?WT.mc_id=aiml-44164-bstollnitz)
-* [Batch endpoints](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-use-batch-endpoint?WT.mc_id=aiml-44164-bstollnitz)
+* [Deploy MLflow models](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-deploy-mlflow-models?tabs=fromjob%2Cmir%2Ccli?WT.mc_id=aiml-44164-bstollnitz)
