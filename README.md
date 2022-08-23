@@ -2,6 +2,12 @@
 
 This project shows how to deploy a Fashion MNIST MLflow model using a batch endpoint. Endpoint 1 demonstrates the simplest scenario, and endpoint 2 demonstrates how to wrap the deployment with custom code.
 
+
+## Blog post
+
+To learn more about the code in this repo, check out the accompanying blog post: https://bea.stollnitz.com/blog/aml-batch-endpoint/
+
+
 ## Azure setup
 
 * You need to have an Azure subscription. You can get a [free subscription](https://azure.microsoft.com/en-us/free?WT.mc_id=aiml-44164-bstollnitz) to try it out.
@@ -149,3 +155,9 @@ Here's how you delete the endpoint when you're done:
 ```
 az ml batch-endpoint delete --name endpoint-batch-2 -y
 ```
+
+
+## Related resourcse
+
+* [Azure ML endpoints](https://docs.microsoft.com/en-us/azure/machine-learning/concept-endpoints?WT.mc_id=aiml-44164-bstollnitz)
+* [Batch endpoints](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-use-batch-endpoint?WT.mc_id=aiml-44164-bstollnitz)
