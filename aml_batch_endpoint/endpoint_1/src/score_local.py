@@ -6,17 +6,16 @@ from pathlib import Path
 import mlflow
 import torch
 from PIL import Image
-from torch.utils.data import DataLoader
 from torchvision.datasets import FashionMNIST
 import numpy as np
 
-from utils_score_nn import predict
+from .utils_score_nn import predict
 
 IMAGES_DIR = "aml_batch_endpoint/test_data/images"
 MODEL_DIR = "aml_batch_endpoint/endpoint_1/model"
 
 
-def main():
+def main() -> None:
     model = mlflow.pytorch.load_model(MODEL_DIR)
     device = "cuda" if torch.cuda.is_available() else "cpu"
 
@@ -28,8 +27,7 @@ def main():
             x = np.array(image).reshape(1, -1)
             images.append(x)
 
-    dataloader = DataLoader(images)
-    predicted_indices = predict(device, dataloader, model)
+    predicted_indices = predict(images, model, device)
     predictions = [
         FashionMNIST.classes[predicted_index]
         for predicted_index in predicted_indices

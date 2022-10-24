@@ -41,13 +41,13 @@ def generate_csv_from_images() -> None:
     image_paths = [f for f in Path(IMAGES_DIR).iterdir() if Path.is_file(f)]
     image_paths.sort()
 
-    X = None
+    X = np.empty((0, 0))
     for (i, image_path) in enumerate(image_paths):
         with Image.open(image_path) as image:
-            if X is None:
+            if len(X) == 0:
                 size = image.height * image.width
                 X = np.empty((len(image_paths), size))
-            x = np.asarray(image).reshape((-1))
+            x = np.asarray(image).reshape((-1)) / 255.0
             X[i, :] = x
 
     header = delimiter.join([f"col_{i}" for i in range(X.shape[1])])
@@ -59,7 +59,7 @@ def generate_csv_from_images() -> None:
                comments="")
 
 
-def main():
+def main() -> None:
     logging.basicConfig(level=logging.INFO)
 
     generate_images(20)
