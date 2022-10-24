@@ -1,26 +1,23 @@
 """Utilities that help with scoring neural networks."""
 
-import torch
-from typing import Optional
 import numpy as np
+import torch
+from torch.utils.data import DataLoader
 
 
-def predict(images: list[np.ndarray[np.uint8, np.dtype[np.uint8]]],
-            model: Optional[torch.nn.Module],
-            device: Optional[str] = "cpu") -> list[torch.Tensor]:
+def predict(dataloader: DataLoader[np.ndarray[np.float64,
+                                              np.dtype[np.float64]]],
+            model: torch.nn.Module, device: str) -> list[torch.Tensor]:
     """
     Makes a prediction for the whole dataset once.
     """
-    if model is None:
-        return []
-
     model.to(device)
     model.eval()
 
     predictions: list[torch.Tensor] = []
     with torch.no_grad():
-        for x in images:
-            tensor = torch.tensor(x).float().to(device)
+        for x in dataloader:
+            tensor = x.float().to(device)
             predictions.extend(_predict_one_batch(model, tensor))
     return predictions
 
