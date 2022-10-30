@@ -15,10 +15,10 @@ from torch.utils.data import DataLoader, random_split
 from torchvision import datasets
 from torchvision.transforms import PILToTensor
 
-from .common import ARTIFACT_NAME
-from .model_wrapper import ModelWrapper
-from .neural_network import NeuralNetwork
-from .utils_train_nn import evaluate, fit
+from common import ARTIFACT_NAME
+from model_wrapper import ModelWrapper
+from neural_network import NeuralNetwork
+from utils_train_nn import evaluate, fit
 
 DATA_DIR = "aml_batch_endpoint/data"
 PYTORCH_MODEL_DIR = "aml_batch_endpoint/endpoint_2/pytorch_model"

@@ -8,8 +8,8 @@ import torch
 from torchvision.datasets import FashionMNIST
 from torch.utils.data import DataLoader
 
-from .dataset import FashionMNISTDatasetFromImages
-from .utils_score_nn import predict
+from dataset import FashionMNISTDatasetFromImages
+from utils_score_nn import predict
 
 IMAGES_DIR = "aml_batch_endpoint/test_data/images"
 MODEL_DIR = "aml_batch_endpoint/endpoint_1/model"
