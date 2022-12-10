@@ -56,7 +56,7 @@ mlflow ui
 
 ```
 cd aml_batch_endpoint/endpoint_2
-mlflow models predict --model-uri pyfunc_model --input-path "../test_data/images.csv" --content-type csv
+mlflow models predict --model-uri pyfunc_model --input-path "../test_data/images.csv" --content-type csv --env-manager local
 ```
 
 
